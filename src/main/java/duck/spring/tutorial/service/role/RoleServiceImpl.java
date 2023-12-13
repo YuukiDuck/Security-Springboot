@@ -1,8 +1,8 @@
-package duck.spring.tutorial.service.impl;
+package duck.spring.tutorial.service.role;
 
 import duck.spring.tutorial.model.Role;
 import duck.spring.tutorial.repository.RoleRepository;
-import duck.spring.tutorial.service.RoleService;
+import duck.spring.tutorial.service.role.RoleService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

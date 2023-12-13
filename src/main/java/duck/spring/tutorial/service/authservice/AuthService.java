@@ -1,4 +1,4 @@
-package duck.spring.tutorial.service;
+package duck.spring.tutorial.service.authservice;
 
 import duck.spring.tutorial.dto.AuthRequestDto;
 import duck.spring.tutorial.dto.AuthResponseDto;
@@ -8,8 +8,9 @@ import duck.spring.tutorial.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 
 import java.util.Optional;
 
@@ -23,7 +24,7 @@ public class AuthService {
 
     public AuthResponseDto register(AuthRequestDto requestDto) {
         var user = User.builder()
-                .email(requestDto.getEmail())
+                .email(requestDto.getUsername())
                 .password(passwordEncoder.encode(requestDto.getPassword()))
                 .role(ERole.USER)
                 .build();
@@ -34,13 +35,13 @@ public class AuthService {
     }
 
     public AuthResponseDto login(AuthRequestDto requestDto) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(requestDto.getEmail(), requestDto.getPassword()));
-        var user = userRepository.findByEmail(requestDto.getEmail());
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(requestDto.getUsername(), requestDto.getPassword()));
+        var user = userRepository.findByUsername(requestDto.getUsername());
         return AuthResponseDto.builder().token(jwtService.generateToken(user.get().getEmail())).build();
     }
 
-    public boolean authenticateUser(String email, String password) {
-        Optional<User> optionalUser = userRepository.findByEmail(email);
+    public boolean authenticateUser(String username, String password) {
+        Optional<User> optionalUser = userRepository.findByUsername(username);
 
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
@@ -49,4 +50,3 @@ public class AuthService {
         return false;
     }
 }
-

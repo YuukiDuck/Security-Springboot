@@ -1,4 +1,4 @@
-package duck.spring.tutorial.service;
+package duck.spring.tutorial.service.role;
 
 import duck.spring.tutorial.model.Role;
 

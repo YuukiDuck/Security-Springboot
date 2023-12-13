@@ -1,4 +1,4 @@
-package duck.spring.tutorial.service;
+package duck.spring.tutorial.service.user;
 
 import duck.spring.tutorial.model.User;
 

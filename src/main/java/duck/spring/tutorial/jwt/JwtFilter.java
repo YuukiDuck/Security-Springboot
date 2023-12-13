@@ -1,6 +1,6 @@
 package duck.spring.tutorial.jwt;
 
-import duck.spring.tutorial.service.JwtService;
+import duck.spring.tutorial.service.authservice.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,18 +32,18 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         final String token = authHeader.substring(7);
-        String email = null;
+        String username = null;
 
         try {
-            email = jwtService.decode(token).getSubject();
+            username = jwtService.decode(token).getSubject();
         } catch (Exception e) {
             // Handle any exceptions related to token decoding or verification
             // For example, SignatureException, ExpiredJwtException, etc.
             // Log or handle the exception as appropriate for your application
         }
 
-        if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
             if (!jwtService.isExpired(token)) {
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

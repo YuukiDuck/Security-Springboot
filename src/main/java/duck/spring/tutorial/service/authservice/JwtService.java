@@ -1,4 +1,4 @@
-package duck.spring.tutorial.service;
+package duck.spring.tutorial.service.authservice;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
@@ -11,9 +11,9 @@ public class JwtService {
 
     private static final String SECRET = "77397A244326462948404D635166546A576E5A7234753778214125442A472D4B";
 
-    public String generateToken(String email) {
+    public String generateToken(String username) {
         return Jwts.builder()
-                .setSubject(email)
+                .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 3))
                 .signWith(Keys.hmacShaKeyFor(SECRET.getBytes()))

@@ -1,7 +1,7 @@
 package duck.spring.tutorial.controller;
 
 import duck.spring.tutorial.model.Role;
-import duck.spring.tutorial.service.RoleService;
+import duck.spring.tutorial.service.role.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

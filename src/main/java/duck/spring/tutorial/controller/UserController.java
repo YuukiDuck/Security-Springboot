@@ -1,12 +1,10 @@
 package duck.spring.tutorial.controller;
 
 import duck.spring.tutorial.model.User;
-import duck.spring.tutorial.repository.UserRepository;
-import duck.spring.tutorial.service.UserService;
+import duck.spring.tutorial.service.user.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,6 +36,7 @@ public class UserController {
         return userOptional.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
     @PostMapping
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<User> createUser(@RequestBody User user) {
