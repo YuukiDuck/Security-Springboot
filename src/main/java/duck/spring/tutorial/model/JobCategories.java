@@ -1,16 +1,16 @@
 package duck.spring.tutorial.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import jakarta.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
-@Data
-@NoArgsConstructor
+@Data//toString
+@Getter
+@Setter
 @AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Table(name = "job_category")
 public class JobCategories {
 
     @Id
@@ -23,8 +23,4 @@ public class JobCategories {
     @Column(length = 500)
     private String description;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Jobs> jobs = new HashSet<>();
 }
-
-

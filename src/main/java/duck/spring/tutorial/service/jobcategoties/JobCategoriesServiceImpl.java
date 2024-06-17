@@ -1,47 +1,66 @@
 package duck.spring.tutorial.service.jobcategoties;
 
+import duck.spring.tutorial.dto.JobCategoryDto;
 import duck.spring.tutorial.model.JobCategories;
+import duck.spring.tutorial.model.Jobs;
 import duck.spring.tutorial.repository.JobCategoryRepository;
+import duck.spring.tutorial.repository.JobRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class JobCategoriesServiceImpl implements JobCategoriesService{
+public class JobCategoriesServiceImpl implements JobCategoriesService {
     private final JobCategoryRepository jobCategoryRepository;
+    private final JobRepository jobRepository;
+
     @Override
-    public JobCategories createCategory(JobCategories category) {
-        return jobCategoryRepository.save(category);
+    @Transactional
+    public JobCategories createCategory(JobCategoryDto jobCategoryDto) {
+        JobCategories newjobCategory = JobCategories
+                .builder()
+                .name(jobCategoryDto.getName())
+                .description(jobCategoryDto.getDescription())
+                .build();
+        return jobCategoryRepository.save(newjobCategory);
     }
 
     @Override
-    public Optional<JobCategories> getCategoryById(Long id) {
-        return jobCategoryRepository.findById(id);
+    public JobCategories getCategoryById(Long id) {
+        return jobCategoryRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Job category not found"));
     }
 
     @Override
-    public List<JobCategories> getAllCategories() {
+    public List<JobCategories> getAllJobCategories() {
         return jobCategoryRepository.findAll();
     }
 
     @Override
-    public JobCategories updateCategory(Long id, JobCategories category) {
-        Optional<JobCategories> existingCategoryOpt = jobCategoryRepository.findById(id);
-        if (existingCategoryOpt.isPresent()) {
-            JobCategories existingCategory = existingCategoryOpt.get();
-            existingCategory.setName(category.getName());
-            existingCategory.setDescription(category.getDescription());
-            return jobCategoryRepository.save(existingCategory);
-        } else {
-            throw new RuntimeException("Category not found with id " + id);
-        }
+    @Transactional
+    public JobCategories updateJobCategory(Long id, JobCategoryDto jobCategoryDto) {
+        JobCategories existingJobCategory = getCategoryById(id);
+        existingJobCategory.setName(jobCategoryDto.getName());
+        existingJobCategory.setDescription(jobCategoryDto.getDescription());
+        jobCategoryRepository.save(existingJobCategory);
+        return existingJobCategory;
     }
 
     @Override
-    public void deleteCategory(Long id) {
-        jobCategoryRepository.deleteById(id);
+    public JobCategories deleteJobCategeory(Long id) throws Exception {
+        JobCategories jobCategories = jobCategoryRepository.findById(id)
+                .orElseThrow(() -> new ChangeSetPersister.NotFoundException());
+
+        List<Jobs> jobs = jobRepository.findByJobCategories(jobCategories);
+        if (!jobs.isEmpty()) {
+            throw new IllegalStateException("Cannot delete job category with associated jobs");
+        } else {
+            jobCategoryRepository.deleteById(id);
+            return jobCategories;
+        }
     }
 }

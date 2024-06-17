@@ -12,6 +12,8 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+@Table(name = "Job")
 public class Jobs {
 
     @Id
@@ -32,8 +34,8 @@ public class Jobs {
     private String location;
 
     @ManyToOne
-    @JoinColumn(name = "category_id", nullable = false)
-    private JobCategories category;
+    @JoinColumn(name = "job_category_id")
+    private JobCategories jobCategories;
 
     @ManyToMany
     @JoinTable(
@@ -43,6 +45,4 @@ public class Jobs {
     )
     private Set<JobSkills> skills = new HashSet<>();
 
-    @Column(nullable = false)
-    private boolean isActive;
 }

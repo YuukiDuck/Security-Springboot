@@ -1,16 +1,16 @@
 package duck.spring.tutorial.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class AuthRequestDto {
-    private String username;
-    private String password;
+@AllArgsConstructor
+@Builder
+public class JobSkillDto {
+    private String name;
+    private String description;
 }
-
