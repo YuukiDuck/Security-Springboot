@@ -3,8 +3,10 @@ package duck.spring.tutorial.model;
 import lombok.*;
 import jakarta.persistence.*;
 
+import java.util.Set;
+
 @Entity
-@Data//toString
+@Data
 @Getter
 @Setter
 @AllArgsConstructor
@@ -23,4 +25,6 @@ public class JobCategories {
     @Column(length = 500)
     private String description;
 
+    @OneToMany(mappedBy = "category")
+    private Set<Jobs> jobs;
 }

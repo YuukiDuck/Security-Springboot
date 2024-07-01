@@ -2,9 +2,8 @@ package duck.spring.tutorial.model;
 
 import lombok.*;
 import jakarta.persistence.*;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+
+import java.util.*;
 
 @Entity
 @Data
@@ -27,7 +26,6 @@ public class Jobs {
     private String description;
 
     @Column(nullable = false)
-    @Temporal(TemporalType.DATE)
     private Date datePosted;
 
     @Column(nullable = false)
@@ -35,7 +33,7 @@ public class Jobs {
 
     @ManyToOne
     @JoinColumn(name = "job_category_id")
-    private JobCategories jobCategories;
+    private JobCategories category;
 
     @ManyToMany
     @JoinTable(
@@ -45,4 +43,6 @@ public class Jobs {
     )
     private Set<JobSkills> skills = new HashSet<>();
 
+//    @OneToMany(mappedBy = "job", cascade = CascadeType.ALL)
+//    private List<JobSkills> skills = new ArrayList<>();
 }

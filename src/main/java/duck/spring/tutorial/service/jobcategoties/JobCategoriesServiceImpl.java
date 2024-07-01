@@ -52,15 +52,15 @@ public class JobCategoriesServiceImpl implements JobCategoriesService {
 
     @Override
     public JobCategories deleteJobCategeory(Long id) throws Exception {
-        JobCategories jobCategories = jobCategoryRepository.findById(id)
+        JobCategories category = jobCategoryRepository.findById(id)
                 .orElseThrow(() -> new ChangeSetPersister.NotFoundException());
 
-        List<Jobs> jobs = jobRepository.findByJobCategories(jobCategories);
+        List<Jobs> jobs = jobRepository.findByCategory(category);
         if (!jobs.isEmpty()) {
             throw new IllegalStateException("Cannot delete job category with associated jobs");
         } else {
             jobCategoryRepository.deleteById(id);
-            return jobCategories;
+            return category;
         }
     }
 }

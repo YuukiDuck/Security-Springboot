@@ -19,6 +19,6 @@ public class JobDto {
     private String location;
     private Long categoryId;
     private Set<Long> skillIds;
-    private boolean isActive;
+
 }
 

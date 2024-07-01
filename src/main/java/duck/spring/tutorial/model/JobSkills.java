@@ -2,6 +2,7 @@ package duck.spring.tutorial.model;
 
 import lombok.*;
 import jakarta.persistence.*;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,6 +26,10 @@ public class JobSkills {
     @Column(length = 500)
     private String description;
 
-    @ManyToMany(mappedBy = "skills")
+        @ManyToMany(mappedBy = "skills")
     private Set<Jobs> jobs = new HashSet<>();
+
+//    @ManyToOne
+//    @JoinColumn(name = "job_id")
+//    private Jobs job;
 }

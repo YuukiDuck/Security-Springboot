@@ -16,7 +16,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/JobCategory")
+@RequestMapping("api/v1/jobcategory")
 @RequiredArgsConstructor
 public class JobCategoriesController {
     private final JobCategoriesService jobCategoriesService;
